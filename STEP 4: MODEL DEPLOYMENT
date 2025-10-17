@@ -1,0 +1,45 @@
+# Step 4: Model Deployment
+
+print("\n--- Đánh giá và So sánh các Mô hình ---")
+
+# Hiển thị kết quả chi tiết của từng mô hình
+print("\nKết quả đánh giá trên tập Test:")
+print("{:<10} {:<12} {:<12} {:<15}".format(
+    'Model', 'Accuracy', 'Precision', 'Confusion Matrix'))
+print("-" * 55)
+
+for name, result in results.items():
+    print("{:<10} {:<12.4f} {:<12.4f} {}".format(
+        name, 
+        result['accuracy'], 
+        result['precision'], 
+        result['confusion_matrix']))
+
+# Tìm mô hình tốt nhất
+best_model_name = max(results, key=lambda x: results[x]['accuracy'])
+best_accuracy = results[best_model_name]['accuracy']
+best_precision = results[best_model_name]['precision']
+
+print(f"\n--- Kết luận ---")
+print(f"Mô hình tốt nhất: {best_model_name}")
+print(f"Độ chính xác: {best_accuracy:.4f}")
+print(f"Precision: {best_precision:.4f}")
+
+print(f"\nMa trận nhầm lẫn của mô hình {best_model_name}:")
+print(results[best_model_name]['confusion_matrix'])
+
+# Lưu mô hình tốt nhất
+best_model = models[best_model_name]
+with open('best_spam_classifier.pkl', 'wb') as f:
+    pickle.dump(best_model, f)
+
+print(f"\nĐã lưu mô hình {best_model_name} thành công!")
+print("File: 'best_spam_classifier.pkl'")
+
+# Báo cáo chi tiết cho mô hình tốt nhất
+from sklearn.metrics import classification_report
+
+print(f"\n--- Báo cáo chi tiết cho mô hình {best_model_name} ---")
+y_pred_best = best_model.predict(X_test)
+print(classification_report(y_test, y_pred_best, 
+                          target_names=['Ham (0)', 'Spam (1)']))
