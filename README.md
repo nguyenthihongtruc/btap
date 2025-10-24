@@ -1,7 +1,9 @@
 Practice 1: Machine Learning
 
 B1. Mở terminal trong vscode chạy: pip install -r requirements.txt
+
 B2. Chạy file practice_1.ipynb
+
 B3. Chạy file app.py  => python -m streamlit run app.py
 
 ==============================================
